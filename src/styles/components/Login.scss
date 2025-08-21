@@ -1,0 +1,129 @@
+@import '../main.scss';
+
+.login-container {
+  @include flex-center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+  padding: 1rem;
+}
+
+.login-card {
+  background-color: $surface-color;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  
+  @include mobile {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  h1 {
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    
+    @include mobile {
+      font-size: 1.5rem;
+    }
+  }
+  
+  p {
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+.login-form {
+  .form-group {
+    margin-bottom: 1.5rem;
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: $text-primary;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid $border-color;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.2s ease-in-out;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      }
+      
+      &.error {
+        border-color: $error-color;
+        
+        &:focus {
+          box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+        }
+      }
+      
+      &::placeholder {
+        color: $text-secondary;
+      }
+    }
+    
+    .error-message {
+      display: block;
+      color: $error-color;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  }
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $border-color;
+  
+  p {
+    margin: 0;
+    color: $text-secondary;
+  }
+  
+  .btn--link {
+    background: none;
+    border: none;
+    color: $primary-color;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+    
+    &:hover {
+      color: $primary-dark;
+    }
+  }
+}
+
+// Button link variant
+.btn--link {
+  background: none;
+  border: none;
+  color: $primary-color;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  
+  &:hover {
+    color: $primary-dark;
+  }
+}

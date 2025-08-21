@@ -98,7 +98,7 @@ class ApiService {
 
   constructor() {
     this.api = axios.create({
-      baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000/api",
+      baseURL: process.env.REACT_APP_API_URL || "http://localhost:9001/api",
       headers: {
         "Content-Type": "application/json",
       },
@@ -112,21 +112,21 @@ class ApiService {
 
     // Request interceptor
     this.api.interceptors.request.use(
-      (config) => {
+      config => {
         if (this.token) {
           config.headers.Authorization = `Bearer ${this.token}`;
         }
         return config;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
       }
     );
 
     // Response interceptor
     this.api.interceptors.response.use(
-      (response) => response,
-      (error) => {
+      response => response,
+      error => {
         if (error.response?.status === 401) {
           this.logout();
         }
@@ -168,9 +168,8 @@ class ApiService {
   }
 
   async getProfile(): Promise<{ user: User }> {
-    const response: AxiosResponse<{ user: User }> = await this.api.get(
-      "/auth/profile"
-    );
+    const response: AxiosResponse<{ user: User }> =
+      await this.api.get("/auth/profile");
     return response.data;
   }
 
@@ -214,6 +213,12 @@ class ApiService {
     const response: AxiosResponse<{ patients: Patient[] }> = await this.api.get(
       `/patients/search?query=${encodeURIComponent(query)}`
     );
+    return response.data;
+  }
+
+  async getPatients(): Promise<{ patients: Patient[] }> {
+    const response: AxiosResponse<{ patients: Patient[] }> =
+      await this.api.get("/patients");
     return response.data;
   }
 
@@ -337,6 +342,12 @@ class ApiService {
 
     const response: AxiosResponse<{ medicalRecords: MedicalRecord[] }> =
       await this.api.get(`/medical-records/doctor?${queryParams}`);
+    return response.data;
+  }
+
+  async getDoctors(): Promise<{ doctors: User[] }> {
+    const response: AxiosResponse<{ doctors: User[] }> =
+      await this.api.get("/users/doctors");
     return response.data;
   }
 }

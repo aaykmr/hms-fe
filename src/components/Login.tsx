@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import '../styles/components/Login.scss';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import "../styles/components/Login.scss";
 
-const schema = yup.object({
-  staffId: yup.string().required('Staff ID is required'),
-  password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
-}).required();
+const schema = yup
+  .object({
+    staffId: yup.string().required("Staff ID is required"),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
+  })
+  .required();
 
 type LoginFormData = yup.InferType<typeof schema>;
 
 const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -29,13 +34,15 @@ const Login: React.FC = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    setError('');
-    
+    setError("");
+
     try {
       await login(data.staffId, data.password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -49,11 +56,7 @@ const Login: React.FC = () => {
           <p>Sign in to your account</p>
         </div>
 
-        {error && (
-          <div className="alert alert--error">
-            {error}
-          </div>
-        )}
+        {error && <div className="alert alert--error">{error}</div>}
 
         <form onSubmit={handleSubmit(onSubmit)} className="login-form">
           <div className="form-group">
@@ -61,9 +64,9 @@ const Login: React.FC = () => {
             <input
               id="staffId"
               type="text"
-              {...register('staffId')}
+              {...register("staffId")}
               placeholder="Enter your staff ID"
-              className={errors.staffId ? 'error' : ''}
+              className={errors.staffId ? "error" : ""}
             />
             {errors.staffId && (
               <span className="error-message">{errors.staffId.message}</span>
@@ -75,9 +78,9 @@ const Login: React.FC = () => {
             <input
               id="password"
               type="password"
-              {...register('password')}
+              {...register("password")}
               placeholder="Enter your password"
-              className={errors.password ? 'error' : ''}
+              className={errors.password ? "error" : ""}
             />
             {errors.password && (
               <span className="error-message">{errors.password.message}</span>
@@ -89,17 +92,17 @@ const Login: React.FC = () => {
             className="btn btn--primary btn--lg w-100"
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className="login-footer">
           <p>
-            Don't have an account?{' '}
+            Don`t have an account?{" "}
             <button
               type="button"
               className="btn btn--link"
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate("/signup")}
             >
               Sign up
             </button>

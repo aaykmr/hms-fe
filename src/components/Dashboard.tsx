@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { DashboardStats } from '../services/api';
-import apiService from '../services/api';
-import { User, Calendar, Users, FileText, LogOut } from 'lucide-react';
-import '../styles/components/Dashboard.scss';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { DashboardStats } from "../services/api";
+import apiService from "../services/api";
+import { User, Calendar, Users, FileText, LogOut } from "lucide-react";
+import "../styles/components/Dashboard.scss";
 
 const Dashboard: React.FC = () => {
   const { user, logout, hasClearance } = useAuth();
@@ -15,12 +15,12 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const loadDashboardStats = async () => {
       try {
-        if (hasClearance('L2')) {
+        if (hasClearance("L2")) {
           const { dashboard } = await apiService.getDoctorDashboard();
           setStats(dashboard);
         }
       } catch (error) {
-        console.error('Failed to load dashboard stats:', error);
+        console.error("Failed to load dashboard stats:", error);
       } finally {
         setLoading(false);
       }
@@ -35,29 +35,31 @@ const Dashboard: React.FC = () => {
 
   const menuItems = [
     {
-      title: 'Patient Registration',
+      title: "Patient Registration",
       icon: <Users size={24} />,
-      path: '/patients/register',
-      clearance: 'L1' as const,
-      description: 'Register new patients'
+      path: "/patients/register",
+      clearance: "L1" as const,
+      description: "Register new patients",
     },
     {
-      title: 'Appointments',
+      title: "Appointments",
       icon: <Calendar size={24} />,
-      path: '/appointments',
-      clearance: 'L1' as const,
-      description: 'Manage appointments'
+      path: "/appointments",
+      clearance: "L1" as const,
+      description: "Manage appointments",
     },
     {
-      title: 'Medical Records',
+      title: "Medical Records",
       icon: <FileText size={24} />,
-      path: '/medical-records',
-      clearance: 'L2' as const,
-      description: 'View and manage medical records'
-    }
+      path: "/medical-records",
+      clearance: "L2" as const,
+      description: "View and manage medical records",
+    },
   ];
 
-  const filteredMenuItems = menuItems.filter(item => hasClearance(item.clearance));
+  const filteredMenuItems = menuItems.filter(item =>
+    hasClearance(item.clearance)
+  );
 
   return (
     <div className="dashboard">
@@ -72,7 +74,9 @@ const Dashboard: React.FC = () => {
               <div className="user-info">
                 <span className="user-name">{user?.name}</span>
                 <span className="user-role">Level {user?.clearanceLevel}</span>
-                {user?.department && <span className="user-dept">{user.department}</span>}
+                {user?.department && (
+                  <span className="user-dept">{user.department}</span>
+                )}
               </div>
               <button onClick={handleLogout} className="btn btn--outline">
                 <LogOut size={16} />
@@ -85,9 +89,9 @@ const Dashboard: React.FC = () => {
 
       <main className="dashboard-main">
         <div className="container">
-          {hasClearance('L2') && stats && (
+          {hasClearance("L2") && stats && (
             <section className="dashboard-stats">
-              <h2>Today's Overview</h2>
+              <h2>Today`s Overview</h2>
               <div className="stats-grid">
                 <div className="stat-card">
                   <div className="stat-card__icon">
@@ -95,7 +99,7 @@ const Dashboard: React.FC = () => {
                   </div>
                   <div className="stat-card__content">
                     <h3>{stats.todayAppointments}</h3>
-                    <p>Today's Appointments</p>
+                    <p>Today`s Appointments</p>
                   </div>
                 </div>
                 <div className="stat-card">
@@ -132,15 +136,13 @@ const Dashboard: React.FC = () => {
           <section className="dashboard-menu">
             <h2>Quick Actions</h2>
             <div className="menu-grid">
-              {filteredMenuItems.map((item) => (
+              {filteredMenuItems.map(item => (
                 <div
                   key={item.path}
                   className="menu-card"
                   onClick={() => navigate(item.path)}
                 >
-                  <div className="menu-card__icon">
-                    {item.icon}
-                  </div>
+                  <div className="menu-card__icon">{item.icon}</div>
                   <div className="menu-card__content">
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>

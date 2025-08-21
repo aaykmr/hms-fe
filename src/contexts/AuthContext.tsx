@@ -62,12 +62,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = async (staffId: string, password: string) => {
-    try {
-      const response = await apiService.login({ staffId, password });
-      setUser(response.user);
-    } catch (error) {
-      throw error;
-    }
+    const response = await apiService.login({ staffId, password });
+    setUser(response.user);
   };
 
   const signup = async (data: {
@@ -78,12 +74,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     clearanceLevel?: "L1" | "L2" | "L3" | "L4";
     department?: string;
   }) => {
-    try {
-      const response = await apiService.signup(data);
-      setUser(response.user);
-    } catch (error) {
-      throw error;
-    }
+    const response = await apiService.signup(data);
+    setUser(response.user);
   };
 
   const logout = () => {

@@ -7,25 +7,21 @@ import { ArrowLeft } from "lucide-react";
 import apiService from "../services/api";
 import "../styles/components/PatientRegistration.scss";
 
-const schema = yup
-  .object({
-    phoneNumber: yup.string().required("Phone number is required"),
-    name: yup.string().required("Name is required"),
-    dateOfBirth: yup.string().optional(),
-    gender: yup
-      .string()
-      .oneOf(["male", "female", "other"], "Invalid gender")
-      .optional(),
-    address: yup.string().optional(),
-    emergencyContact: yup.string().optional(),
-    emergencyContactPhone: yup.string().optional(),
-    bloodGroup: yup.string().optional(),
-    allergies: yup.string().optional(),
-    medicalHistory: yup.string().optional(),
-  })
-  .required();
-
-type PatientFormData = yup.InferType<typeof schema>;
+const schema = yup.object({
+  phoneNumber: yup.string().required("Phone number is required"),
+  name: yup.string().required("Name is required"),
+  dateOfBirth: yup.string().optional(),
+  gender: yup
+    .string()
+    .oneOf(["male", "female", "other"], "Invalid gender")
+    .optional(),
+  address: yup.string().optional(),
+  emergencyContact: yup.string().optional(),
+  emergencyContactPhone: yup.string().optional(),
+  bloodGroup: yup.string().optional(),
+  allergies: yup.string().optional(),
+  medicalHistory: yup.string().optional(),
+});
 
 const PatientRegistration: React.FC = () => {
   const navigate = useNavigate();
@@ -38,11 +34,11 @@ const PatientRegistration: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<PatientFormData>({
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: PatientFormData) => {
+  const onSubmit = async (data: any) => {
     setIsLoading(true);
     setError("");
     setSuccess("");

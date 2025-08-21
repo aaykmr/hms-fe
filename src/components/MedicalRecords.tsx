@@ -1,6 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const MedicalRecords: React.FC = () => {
   const navigate = useNavigate();
@@ -9,7 +9,10 @@ const MedicalRecords: React.FC = () => {
     <div className="medical-records">
       <div className="container">
         <div className="page-header">
-          <button onClick={() => navigate('/dashboard')} className="btn btn--outline">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="btn btn--outline"
+          >
             <ArrowLeft size={16} />
             Back to Dashboard
           </button>

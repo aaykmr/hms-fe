@@ -1,0 +1,120 @@
+@use "sass:color";
+@import "../main.scss";
+
+.appointment-management {
+  .appointment-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    h1 {
+      text-align: center;
+      color: $primary-color;
+      margin-bottom: 2rem;
+    }
+
+    .appointment-form {
+      .form-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        background: #fafafa;
+
+        h3 {
+          color: $primary-color;
+          margin-bottom: 1rem;
+          font-size: 1.2rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: #333;
+        }
+
+        input,
+        select,
+        textarea {
+          padding: 0.75rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 1rem;
+          transition: border-color 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+          }
+
+          &.error {
+            border-color: $error-color;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        .error-message {
+          color: $error-color;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+      }
+
+      .submit-button {
+        width: 100%;
+        padding: 1rem;
+        background: $primary-color;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover:not(:disabled) {
+          background: color.adjust($primary-color, $lightness: -10%);
+        }
+
+        &:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+    color: $text-secondary;
+  }
+}

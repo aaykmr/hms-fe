@@ -51,6 +51,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const { user } = await apiService.getProfile();
           setUser(user);
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error("Failed to load user profile:", error);
           localStorage.removeItem("token");
         }

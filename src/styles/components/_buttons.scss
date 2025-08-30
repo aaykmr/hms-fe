@@ -1,0 +1,111 @@
+// Shared button styles used across all components
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &--outline {
+    background-color: transparent;
+    color: #475569;
+    border: 1px solid #d1d5db;
+
+    &:hover:not(:disabled) {
+      background-color: #f9fafb;
+      border-color: #9ca3af;
+    }
+  }
+
+  &--primary {
+    background-color: #3b82f6;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: #2563eb;
+    }
+  }
+
+  &--secondary {
+    background-color: #6b7280;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: #4b5563;
+    }
+  }
+
+  &--success {
+    background-color: #10b981;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: #059669;
+    }
+  }
+
+  &--warning {
+    background-color: #f59e0b;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: #d97706;
+    }
+  }
+
+  &--danger {
+    background-color: #ef4444;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: #dc2626;
+    }
+  }
+
+  &--link {
+    background-color: transparent;
+    color: #3b82f6;
+    text-decoration: underline;
+    min-width: auto;
+    padding: 0.25rem 0.5rem;
+
+    &:hover:not(:disabled) {
+      color: #2563eb;
+      background-color: transparent;
+    }
+  }
+
+  &--lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    min-width: 140px;
+  }
+
+  &--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    min-width: 100px;
+  }
+
+  &--full {
+    width: 100%;
+  }
+}
+
+// Utility classes
+.w-100 {
+  width: 100%;
+}

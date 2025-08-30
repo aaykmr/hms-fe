@@ -3,7 +3,14 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { DashboardStats } from "../services/api";
 import apiService from "../services/api";
-import { User, Calendar, Users, FileText, LogOut } from "lucide-react";
+import {
+  User,
+  Calendar,
+  Users,
+  FileText,
+  LogOut,
+  Activity,
+} from "lucide-react";
 import "../styles/components/Dashboard.scss";
 
 const Dashboard: React.FC = () => {
@@ -42,11 +49,18 @@ const Dashboard: React.FC = () => {
       description: "Register new patients",
     },
     {
-      title: "Appointments",
+      title: "Create Appointment",
       icon: <Calendar size={24} />,
       path: "/appointments",
       clearance: "L1" as const,
-      description: "Manage appointments",
+      description: "Create new appointments",
+    },
+    {
+      title: "My Appointments",
+      icon: <Calendar size={24} />,
+      path: "/appointments/doctor",
+      clearance: "L2" as const,
+      description: "View and manage your appointments",
     },
     {
       title: "Medical Records",
@@ -54,6 +68,20 @@ const Dashboard: React.FC = () => {
       path: "/medical-records",
       clearance: "L2" as const,
       description: "View and manage medical records",
+    },
+    {
+      title: "User Management",
+      icon: <User size={24} />,
+      path: "/users",
+      clearance: "L3" as const,
+      description: "Manage user clearance levels and permissions",
+    },
+    {
+      title: "Activity Logs",
+      icon: <Activity size={24} />,
+      path: "/activity-logs",
+      clearance: "L3" as const,
+      description: "View system activity and audit logs",
     },
   ];
 

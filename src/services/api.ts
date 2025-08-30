@@ -9,6 +9,7 @@ export interface User {
   clearanceLevel: "L1" | "L2" | "L3" | "L4";
   department?: string;
   lastLogin?: string;
+  createdAt?: string;
 }
 
 export interface Patient {
@@ -61,6 +62,23 @@ export interface MedicalRecord {
   appointment?: Appointment;
   createdAt: string;
   updatedAt?: string;
+}
+
+export interface ActivityLog {
+  id: number;
+  userId: number;
+  activityType: string;
+  description: string;
+  severity: "low" | "medium" | "high" | "critical";
+  targetUserId?: number;
+  targetPatientId?: number;
+  targetAppointmentId?: number;
+  targetMedicalRecordId?: number;
+  details?: any;
+  ipAddress?: string;
+  userAgent?: string;
+  createdAt: string;
+  user?: User;
 }
 
 export interface DashboardStats {
@@ -259,6 +277,14 @@ class ApiService {
     return response.data;
   }
 
+  async getDoctorAppointmentsByWeek(
+    startDate: string
+  ): Promise<{ appointments: Appointment[] }> {
+    const response: AxiosResponse<{ appointments: Appointment[] }> =
+      await this.api.get(`/appointments/doctor/week?startDate=${startDate}`);
+    return response.data;
+  }
+
   async getDoctorDashboard(): Promise<{ dashboard: DashboardStats }> {
     const response: AxiosResponse<{ dashboard: DashboardStats }> =
       await this.api.get("/appointments/doctor/dashboard");
@@ -282,7 +308,7 @@ class ApiService {
     return response.data;
   }
 
-  // Medical Record endpoints
+  // Medical Records endpoints
   async createMedicalRecord(data: {
     appointmentId: number;
     patientId: number;
@@ -345,9 +371,133 @@ class ApiService {
     return response.data;
   }
 
+  async searchMedicalRecords(params: {
+    patientId?: number;
+    patientName?: string;
+    diagnosis?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    doctorId?: number;
+    hasFollowUp?: boolean;
+    limit?: number;
+    page?: number;
+  }): Promise<{
+    medicalRecords: MedicalRecord[];
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  }> {
+    const queryParams = new URLSearchParams();
+    if (params.patientId)
+      queryParams.append("patientId", params.patientId.toString());
+    if (params.patientName)
+      queryParams.append("patientName", params.patientName);
+    if (params.diagnosis) queryParams.append("diagnosis", params.diagnosis);
+    if (params.dateFrom) queryParams.append("dateFrom", params.dateFrom);
+    if (params.dateTo) queryParams.append("dateTo", params.dateTo);
+    if (params.doctorId)
+      queryParams.append("doctorId", params.doctorId.toString());
+    if (params.hasFollowUp !== undefined)
+      queryParams.append("hasFollowUp", params.hasFollowUp.toString());
+    if (params.limit) queryParams.append("limit", params.limit.toString());
+    if (params.page) queryParams.append("page", params.page.toString());
+
+    const response: AxiosResponse<{
+      medicalRecords: MedicalRecord[];
+      pagination: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    }> = await this.api.get(`/medical-records/search?${queryParams}`);
+    return response.data;
+  }
+
   async getDoctors(): Promise<{ doctors: User[] }> {
     const response: AxiosResponse<{ doctors: User[] }> =
       await this.api.get("/users/doctors");
+    return response.data;
+  }
+
+  async getAllUsers(): Promise<{ users: User[] }> {
+    const response: AxiosResponse<{ users: User[] }> =
+      await this.api.get("/users/all");
+    return response.data;
+  }
+
+  async updateUserClearance(
+    userId: number,
+    clearanceLevel: "L1" | "L2" | "L3" | "L4"
+  ): Promise<{ message: string; user: Partial<User> }> {
+    const response: AxiosResponse<{
+      message: string;
+      user: Partial<User>;
+    }> = await this.api.put(`/users/${userId}/clearance`, {
+      clearanceLevel,
+    });
+    return response.data;
+  }
+
+  // Activity Log endpoints
+  async getMyActivityLogs(params?: {
+    activityType?: string;
+    startDate?: string;
+    endDate?: string;
+    limit?: number;
+  }): Promise<{ logs: ActivityLog[] }> {
+    const queryParams = new URLSearchParams();
+    if (params?.activityType)
+      queryParams.append("activityType", params.activityType);
+    if (params?.startDate) queryParams.append("startDate", params.startDate);
+    if (params?.endDate) queryParams.append("endDate", params.endDate);
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const response: AxiosResponse<{ logs: ActivityLog[] }> = await this.api.get(
+      `/activity-logs/my?${queryParams}`
+    );
+    return response.data;
+  }
+
+  async getUserActivityLogs(params?: {
+    userId?: number;
+    activityType?: string;
+    startDate?: string;
+    endDate?: string;
+    limit?: number;
+  }): Promise<{ logs: ActivityLog[] }> {
+    const queryParams = new URLSearchParams();
+    if (params?.userId) queryParams.append("userId", params.userId.toString());
+    if (params?.activityType)
+      queryParams.append("activityType", params.activityType);
+    if (params?.startDate) queryParams.append("startDate", params.startDate);
+    if (params?.endDate) queryParams.append("endDate", params.endDate);
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const response: AxiosResponse<{ logs: ActivityLog[] }> = await this.api.get(
+      `/activity-logs/users?${queryParams}`
+    );
+    return response.data;
+  }
+
+  async getAuditLogs(params?: {
+    startDate?: string;
+    endDate?: string;
+    severity?: string;
+    limit?: number;
+  }): Promise<{ logs: ActivityLog[] }> {
+    const queryParams = new URLSearchParams();
+    if (params?.startDate) queryParams.append("startDate", params.startDate);
+    if (params?.endDate) queryParams.append("endDate", params.endDate);
+    if (params?.severity) queryParams.append("severity", params.severity);
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const response: AxiosResponse<{ logs: ActivityLog[] }> = await this.api.get(
+      `/activity-logs/audit?${queryParams}`
+    );
     return response.data;
   }
 }

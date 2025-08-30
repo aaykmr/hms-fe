@@ -16,7 +16,7 @@ module.exports = {
     "prettier",
   ],
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",

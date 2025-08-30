@@ -1,5 +1,8 @@
 @use "sass:color";
 
+// Import shared button styles
+@import "components/buttons";
+
 // Variables
 $primary-color: #2563eb;
 $primary-dark: #1d4ed8;
@@ -183,76 +186,7 @@ label {
   color: $text-primary;
 }
 
-// Buttons
-.btn {
-  @include button-base;
-
-  &--primary {
-    background-color: $primary-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: $primary-dark;
-    }
-  }
-
-  &--secondary {
-    background-color: $secondary-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: color.adjust($secondary-color, $lightness: -10%);
-    }
-  }
-
-  &--success {
-    background-color: $success-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: color.adjust($success-color, $lightness: -10%);
-    }
-  }
-
-  &--warning {
-    background-color: $warning-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: color.adjust($warning-color, $lightness: -10%);
-    }
-  }
-
-  &--error {
-    background-color: $error-color;
-    color: white;
-
-    &:hover:not(:disabled) {
-      background-color: color.adjust($error-color, $lightness: -10%);
-    }
-  }
-
-  &--outline {
-    background-color: transparent;
-    border: 1px solid $primary-color;
-    color: $primary-color;
-
-    &:hover:not(:disabled) {
-      background-color: $primary-color;
-      color: white;
-    }
-  }
-
-  &--sm {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
-  }
-
-  &--lg {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.125rem;
-  }
-}
+// Button styles are now imported from components/buttons.scss
 
 // Layout utilities
 .container {

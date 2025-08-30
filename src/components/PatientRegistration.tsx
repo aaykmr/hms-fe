@@ -272,7 +272,7 @@ const PatientRegistration: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate("/dashboard")}
-                className="btn btn--secondary"
+                className="btn btn--outline"
               >
                 Cancel
               </button>

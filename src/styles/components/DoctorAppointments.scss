@@ -213,11 +213,12 @@
       position: absolute;
       left: 0;
       right: 0;
-      z-index: 10;
+      z-index: 1000;
       pointer-events: none;
       display: flex;
       align-items: center;
       width: 100%;
+      background: rgba(255, 255, 255, 0.1);
 
       .current-time-dot {
         width: 12px;
@@ -250,6 +251,26 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-left: 0.5rem;
         order: -1; // Move to the beginning of the flex container
+
+        .hours-note {
+          font-size: 0.65rem;
+          opacity: 0.9;
+          font-weight: 500;
+        }
+      }
+
+      &.outside-hours {
+        .current-time-dot {
+          background-color: #f59e0b; // Orange for outside hours
+        }
+
+        .current-time-line {
+          background-color: #f59e0b; // Orange for outside hours
+        }
+
+        .current-time-label {
+          background-color: #f59e0b; // Orange for outside hours
+        }
       }
 
       @keyframes pulse {

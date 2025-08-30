@@ -204,9 +204,53 @@ const DoctorAppointments: React.FC = () => {
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekEnd.getDate() + 6);
 
-    if (now >= weekStart && now <= weekEnd) {
+    // Compare only the date parts, not the full datetime
+    const nowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStartDate = new Date(
+      weekStart.getFullYear(),
+      weekStart.getMonth(),
+      weekStart.getDate()
+    );
+    const weekEndDate = new Date(
+      weekEnd.getFullYear(),
+      weekEnd.getMonth(),
+      weekEnd.getDate()
+    );
+
+    console.log("Date comparison debug:", {
+      nowDate: nowDate.toDateString(),
+      weekStartDate: weekStartDate.toDateString(),
+      weekEndDate: weekEndDate.toDateString(),
+      isInWeek: nowDate >= weekStartDate && nowDate <= weekEndDate,
+    });
+
+    if (nowDate >= weekStartDate && nowDate <= weekEndDate) {
       // Calculate position: (hour + minute/60) * 60px (height of each time slot)
-      const position = (currentHour + currentMinute / 60) * 60;
+      // Show at actual current time position, even if outside business hours
+      let position = (currentHour + currentMinute / 60) * 60;
+
+      // If current time is before 9 AM, show at actual time position (but ensure it's visible)
+      if (currentHour < 9) {
+        // Keep actual position, but ensure it's not too high up (minimum at 12 AM)
+        position = Math.max(0, position);
+      }
+      // If current time is after 5 PM, show at actual time position (but ensure it's visible)
+      else if (currentHour >= 17) {
+        // Keep actual position, but ensure it's not too low down (maximum at 11 PM)
+        position = Math.min(23 * 60, position);
+      }
+
+      // Ensure position is within the full 24-hour range (0 to 23 hours = 0 to 1380px)
+      position = Math.max(0, Math.min(23 * 60, position));
+
+      console.log("Current time debug:", {
+        currentHour,
+        currentMinute,
+        position,
+        actualPosition: (currentHour + currentMinute / 60) * 60,
+        show: true,
+      });
+
       return {
         show: true,
         position,
@@ -215,6 +259,7 @@ const DoctorAppointments: React.FC = () => {
       } as const;
     }
 
+    console.log("Current time debug: not in current week");
     return { show: false } as const;
   };
 
@@ -351,10 +396,26 @@ const DoctorAppointments: React.FC = () => {
                 {/* Current time indicator */}
                 {(() => {
                   const currentTimeInfo = getCurrentTimePosition();
+                  console.log(
+                    "Rendering current time indicator:",
+                    currentTimeInfo
+                  );
+
                   if (currentTimeInfo.show) {
+                    const now = new Date();
+                    const currentHour = now.getHours();
+                    const isOutsideBusinessHours =
+                      currentHour < 9 || currentHour >= 17;
+
+                    console.log("Current time indicator details:", {
+                      position: currentTimeInfo.position,
+                      time: currentTimeInfo.time,
+                      isOutsideBusinessHours,
+                    });
+
                     return (
                       <div
-                        className="current-time-indicator"
+                        className={`current-time-indicator`}
                         style={{
                           top: `${currentTimeInfo.position}px`,
                         }}

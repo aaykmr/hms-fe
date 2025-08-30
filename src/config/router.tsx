@@ -10,6 +10,7 @@ import DoctorAppointments from "../components/DoctorAppointments";
 import MedicalRecords from "../components/MedicalRecords";
 import UserManagement from "../components/UserManagement";
 import ActivityLogs from "../components/ActivityLogs";
+import PatientMonitoring from "../components/PatientMonitoring";
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{
@@ -105,6 +106,15 @@ const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute requiredClearance="L3">
             <ActivityLogs />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/monitoring"
+        element={
+          <ProtectedRoute requiredClearance="L2">
+            <PatientMonitoring />
           </ProtectedRoute>
         }
       />

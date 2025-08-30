@@ -109,6 +109,24 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface VitalSigns {
+  timestamp: number;
+  hr: number; // Heart Rate (bpm)
+  abpSys: number; // Arterial Blood Pressure Systolic (mmHg)
+  abpDia: number; // Arterial Blood Pressure Diastolic (mmHg)
+  spo2: number; // SpO2 (%)
+  resp: number; // Respiratory Rate (breaths/min)
+}
+
+export interface PatientMonitor {
+  bedId: string;
+  patientId: string;
+  patientName: string;
+  isActive: boolean;
+  lastUpdate: string;
+  currentVitals: VitalSigns | null;
+}
+
 // API Service Class
 class ApiService {
   private api: AxiosInstance;
@@ -498,6 +516,101 @@ class ApiService {
     const response: AxiosResponse<{ logs: ActivityLog[] }> = await this.api.get(
       `/activity-logs/audit?${queryParams}`
     );
+    return response.data;
+  }
+
+  // Patient Monitoring endpoints
+  async getAllMonitors(): Promise<{ monitors: PatientMonitor[] }> {
+    const response: AxiosResponse<{ monitors: PatientMonitor[] }> =
+      await this.api.get("/monitoring");
+    return response.data;
+  }
+
+  async getMonitor(bedId: string): Promise<{ monitor: PatientMonitor }> {
+    const response: AxiosResponse<{ monitor: PatientMonitor }> =
+      await this.api.get(`/monitoring/${bedId}`);
+    return response.data;
+  }
+
+  async getMonitorVitalSigns(
+    bedId: string,
+    limit?: number
+  ): Promise<{
+    bedId: string;
+    vitalSigns: VitalSigns[];
+    count: number;
+  }> {
+    const queryParams = new URLSearchParams();
+    if (limit) queryParams.append("limit", limit.toString());
+
+    const response: AxiosResponse<{
+      bedId: string;
+      vitalSigns: VitalSigns[];
+      count: number;
+    }> = await this.api.get(`/monitoring/${bedId}/vitals?${queryParams}`);
+    return response.data;
+  }
+
+  async getMonitorHistory(
+    bedId: string,
+    hours?: number
+  ): Promise<{
+    bedId: string;
+    vitalSigns: VitalSigns[];
+    count: number;
+    timeRange: string;
+  }> {
+    const queryParams = new URLSearchParams();
+    if (hours) queryParams.append("hours", hours.toString());
+
+    const response: AxiosResponse<{
+      bedId: string;
+      vitalSigns: VitalSigns[];
+      count: number;
+      timeRange: string;
+    }> = await this.api.get(`/monitoring/${bedId}/history?${queryParams}`);
+    return response.data;
+  }
+
+  async addNewBed(data: {
+    bedId: string;
+    patientId: string;
+    patientName: string;
+  }): Promise<{ message: string; bed: any }> {
+    const response: AxiosResponse<{ message: string; bed: any }> =
+      await this.api.post("/monitoring", data);
+    return response.data;
+  }
+
+  async removeBed(bedId: string): Promise<{ message: string; bedId: string }> {
+    const response: AxiosResponse<{ message: string; bedId: string }> =
+      await this.api.delete(`/monitoring/${bedId}`);
+    return response.data;
+  }
+
+  async updatePatientInfo(
+    bedId: string,
+    data: {
+      patientId: string;
+      patientName: string;
+    }
+  ): Promise<{ message: string; bed: any }> {
+    const response: AxiosResponse<{ message: string; bed: any }> =
+      await this.api.put(`/monitoring/${bedId}/patient`, data);
+    return response.data;
+  }
+
+  async setBedStatus(
+    bedId: string,
+    isActive: boolean
+  ): Promise<{
+    message: string;
+    bed: { bedId: string; isActive: boolean };
+  }> {
+    const response: AxiosResponse<{
+      message: string;
+      bed: { bedId: string; isActive: boolean };
+    }> = await this.api.put(`/monitoring/${bedId}/status`, { isActive });
     return response.data;
   }
 }

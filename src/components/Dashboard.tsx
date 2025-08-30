@@ -83,6 +83,13 @@ const Dashboard: React.FC = () => {
       clearance: "L3" as const,
       description: "View system activity and audit logs",
     },
+    {
+      title: "Patient Monitoring",
+      icon: <Activity size={24} />,
+      path: "/monitoring",
+      clearance: "L2" as const,
+      description: "Real-time patient vital signs monitoring",
+    },
   ];
 
   const filteredMenuItems = menuItems.filter(item =>

@@ -1,15 +1,18 @@
 # Hospital Management System - Frontend
 
-A modern React TypeScript frontend for the Hospital Management System with role-based access control (RBAC) and SCSS styling.
+A modern React TypeScript frontend for the Hospital Management System with role-based access control (RBAC), comprehensive activity logging, real-time patient monitoring, and advanced calendar functionality.
 
 ## Features
 
 - **Authentication**: Login and signup with JWT token management
 - **Role-Based Access Control**: Different access levels (L1, L2, L3, L4)
 - **Patient Registration**: Register new patients with comprehensive forms
-- **Appointment Management**: Schedule and manage appointments
-- **Medical Records**: Create and manage patient medical records
+- **Appointment Management**: Google Calendar-like weekly view with real-time current time indicator
+- **Medical Records**: Create and manage patient medical records with advanced search and filtering
 - **Doctor Dashboard**: View statistics and patient information
+- **User Management**: L3/L4 users can manage user accounts and change clearance levels
+- **Activity Logs**: Comprehensive audit trail viewing for all system activities
+- **Patient Monitoring**: Real-time vital signs monitoring with interactive charts
 - **Responsive Design**: Mobile-friendly interface with SCSS styling
 
 ## Tech Stack
@@ -21,6 +24,8 @@ A modern React TypeScript frontend for the Hospital Management System with role-
 - **HTTP Client**: Axios
 - **Icons**: Lucide React
 - **State Management**: React Context API
+- **Charts**: SVG-based real-time charts for vital signs
+- **Real-time Updates**: Short polling for live data
 
 ## Prerequisites
 
@@ -70,11 +75,16 @@ A modern React TypeScript frontend for the Hospital Management System with role-
 src/
 ├── components/          # React components
 │   ├── Login.tsx       # Login form
-│   ├── Signup.tsx      # Signup form
-│   ├── Dashboard.tsx   # Main dashboard
+│   ├── Signup.tsx      # Signup form (L1 clearance by default)
+│   ├── Dashboard.tsx   # Main dashboard with role-based navigation
 │   ├── PatientRegistration.tsx
 │   ├── AppointmentManagement.tsx
-│   └── MedicalRecords.tsx
+│   ├── DoctorAppointments.tsx  # Google Calendar-like weekly view
+│   ├── MedicalRecords.tsx      # Advanced medical records management
+│   ├── UserManagement.tsx      # User management (L3/L4 only)
+│   ├── ActivityLogs.tsx        # Activity audit trail (L3/L4 only)
+│   ├── PatientMonitoring.tsx   # Real-time patient monitoring
+│   └── VitalSignsChart.tsx     # Reusable chart component
 ├── contexts/           # React contexts
 │   └── AuthContext.tsx # Authentication context
 ├── services/           # API services
@@ -84,6 +94,37 @@ src/
 │   └── components/    # Component-specific styles
 └── App.tsx           # Main app component
 ```
+
+## Key Features
+
+### Google Calendar-like Appointment View
+
+- **Weekly Layout**: Monday to Sunday with time slots from 12 AM to 11 PM
+- **Current Time Indicator**: Red line showing current time with time label
+- **Today Highlighting**: Current day column has distinct background
+- **Appointment Details**: Click appointments to view details in right panel
+- **Real-time Updates**: Current time line updates every minute
+
+### Patient Monitoring System
+
+- **Real-time Vital Signs**: Heart Rate, Blood Pressure, SpO2, Respiration Rate
+- **Interactive Charts**: SVG-based charts with dynamic Y-axis scaling
+- **Bed Management**: Add/remove monitoring beds, assign patients
+- **Live Updates**: Short polling mechanism for real-time data
+- **Responsive Design**: Charts adapt to different screen sizes
+
+### Medical Records Management
+
+- **Patient History**: Comprehensive medical record viewing
+- **Advanced Search**: Filter by date range, diagnosis, doctor, and more
+- **CSV Export**: Download medical records for external analysis
+- **CRUD Operations**: Create, read, update medical records
+
+### User Management & Activity Logs
+
+- **Clearance Level Management**: L3/L4 users can change user access levels
+- **Activity Audit Trail**: View all system activities with filtering
+- **Permission-based Access**: Role-based visibility of management features
 
 ## Authentication Flow
 
@@ -95,26 +136,27 @@ src/
 ## RBAC Clearance Levels
 
 - **L1**: Basic access (receptionist)
-
   - Register patients
   - Create appointments
   - View basic information
 
 - **L2**: Doctor access
-
   - All L1 permissions
   - View patient medical history
   - Create medical records
   - Update appointment status
+  - Access patient monitoring
 
 - **L3**: Senior doctor access
-
   - All L2 permissions
-  - Additional administrative features
+  - Manage user accounts
+  - Change user clearance levels
+  - View activity logs
+  - Full patient monitoring access
 
 - **L4**: Administrator access
   - Full system access
-  - User management
+  - All L3 privileges
   - System configuration
 
 ## API Integration
@@ -134,6 +176,7 @@ The application uses a custom SCSS design system with:
 - **Mixins**: Responsive design, flexbox utilities
 - **Components**: Buttons, cards, forms, alerts
 - **Utilities**: Spacing, typography, layout helpers
+- **Light Theme**: Clean white backgrounds with dark text for optimal readability
 
 ## Development
 
@@ -150,6 +193,7 @@ The application uses a custom SCSS design system with:
 - Follow BEM methodology for class naming
 - Use mixins for responsive design
 - Keep components modular and reusable
+- Maintain consistent light theme throughout
 
 ### API Integration
 
@@ -157,6 +201,12 @@ The application uses a custom SCSS design system with:
 - Include proper TypeScript types
 - Handle errors appropriately
 - Update the API service documentation
+
+### Chart Components
+
+- Use the reusable `VitalSignsChart` component for new charts
+- Configure props for different data types and styling
+- Ensure responsive design with proper scaling
 
 ## Environment Variables
 
@@ -184,6 +234,7 @@ The application uses a custom SCSS design system with:
 3. Include error handling
 4. Test on different screen sizes
 5. Update documentation as needed
+6. Maintain consistent styling and theme
 
 ## License
 
